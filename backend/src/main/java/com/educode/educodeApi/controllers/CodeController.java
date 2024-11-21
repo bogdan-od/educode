@@ -2,6 +2,7 @@ package com.educode.educodeApi.controllers;
 
 import com.educode.educodeApi.DTO.CodeExecuteDTO;
 import com.educode.educodeApi.DTO.CodeTestDTO;
+import com.educode.educodeApi.exceptions.ContainerBuildingException;
 import com.educode.educodeApi.exceptions.ContainerExecutionException;
 import com.educode.educodeApi.exceptions.ContainerTimeoutException;
 import com.educode.educodeApi.models.*;
@@ -80,6 +81,9 @@ public class CodeController {
         } catch (IllegalArgumentException e) {
             response.put("message", "Мова не підтримується на сервері");
             return ResponseEntity.status(422).body(response);
+        } catch (ContainerBuildingException e) {
+            response.put("error", "Помилка при компіляції");
+            response.put("output", e.getMessage());
         } catch (ContainerExecutionException e) {
             if (e.getCode() == 137) {
                 response.put("error", "Перевищено ліміт пам'яті");
@@ -99,7 +103,8 @@ public class CodeController {
             return ResponseEntity.status(500).body(response);
         }
 
-        response.put("output", output);
+        if (!response.containsKey("output"))
+            response.put("output", output);
         return ResponseEntity.ok(response);
     }
 
