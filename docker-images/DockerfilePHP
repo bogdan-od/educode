@@ -1,0 +1,14 @@
+# Використовуємо базовий образ PHP 8.2 з Alpine Linux
+FROM php:8.2-cli-alpine
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією PHP
+RUN echo "php 8.2" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

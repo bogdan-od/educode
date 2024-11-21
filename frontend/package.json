@@ -1,0 +1,53 @@
+{
+  "name": "task-compiler-front",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "serve": "webpack serve --mode development"
+  },
+  "author": "Поправка Богдан",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/plugin-transform-runtime": "^7.25.9",
+    "@babel/preset-env": "^7.26.0",
+    "autoprefixer": "^10.4.20",
+    "babel-loader": "^9.2.1",
+    "mini-css-extract-plugin": "^2.9.2",
+    "postcss": "^8.4.47",
+    "postcss-loader": "^8.1.1",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "axios": "^1.7.7",
+    "buffer": "^6.0.3",
+    "css-loader": "^7.1.2",
+    "detect.js": "^2.2.3",
+    "dotenv-webpack": "^8.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "https-browserify": "^1.0.0",
+    "jose": "^5.9.6",
+    "node-sass": "^9.0.0",
+    "process": "^0.11.10",
+    "quill": "^2.0.2",
+    "sass-loader": "^16.0.3",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "style-loader": "^4.0.0",
+    "url": "^0.11.4",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2",
+    "vue": "^3.5.12",
+    "vue-axios": "^3.5.2",
+    "vue-loader": "^17.4.2",
+    "vue-router": "^4.4.5",
+    "vue-style-loader": "^4.1.3",
+    "vue-template-compiler": "^0.1.0",
+    "vuex": "^4.1.0"
+  }
+}

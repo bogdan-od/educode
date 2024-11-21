@@ -1,0 +1,18 @@
+# Використовуємо мінімальний образ на основі Alpine Linux
+FROM alpine:latest
+
+# Встановлюємо необхідні пакети: build-base для компіляції та lua
+RUN apk update && \
+    apk add --no-cache build-base lua lua-dev
+
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+RUN echo "lua 0" > config.txt
+
+# Встановлюємо змінну PATH для доступу до Lua
+ENV PATH="/app:${PATH}"
+
+ENTRYPOINT ["sh", "-c"]

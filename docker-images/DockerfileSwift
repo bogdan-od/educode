@@ -1,0 +1,14 @@
+# Використовуємо офіційний образ Swift версії 5.6
+FROM swift:5.6
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією Swift
+RUN echo "swift 5.6" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

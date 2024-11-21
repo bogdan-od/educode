@@ -1,0 +1,198 @@
+$input-height: 50px;
+$font-size: 16px;
+
+// Заголовок форми
+h1 {
+    width: 50%;
+    min-width: 320px;
+    max-width: 500px;
+    margin: 0 auto;
+    font-size: 28px;
+}
+
+// Основні стилі форми
+form {
+    width: 50%;
+    min-width: 320px;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 30px;
+
+    // Стилі для міток форми
+    > label {
+        font-size: $font-size;
+        margin-bottom: 5px;
+        display: block;
+        margin-top: 10px;
+    }
+
+    // Відступи для останніх елементів форми
+    >*:nth-last-child(1), >*:nth-last-child(2):not(input):not(label) {
+        margin-top: 20px;
+    }
+
+    // Підказки під полями форми
+    .hint {
+        color: var(--text-color);
+        font-size: 0.85em;
+        
+        &:not(:empty) {
+            margin-top: 7.5px;
+        }
+
+        // Стилі для помилок
+        &.error {
+            color: #ff0000;
+        }
+
+        // Стилі для успішних повідомлень
+        &.success {
+            color: #45bb45;
+        }
+    }
+
+    // Група елементів форми
+    .form-group {
+        display: flex;
+        position: relative;
+
+        // Відступи між групами
+        &:not(:last-of-type) {
+            margin-bottom: 30px;
+        }
+
+        // Додатковий відступ якщо є підказка
+        &:has(.hint:not(:empty)):not(:last-of-type) {
+            margin-bottom: 45px;
+        }
+
+        // Відступ для останньої групи з підказкою
+        &:has(.hint:not(:empty)):last-of-type {
+            margin-bottom: 15px;
+        }
+
+        // Стилі для міток всередині групи
+        label {
+            position: absolute;
+            transition: all .3s ease-in-out;
+            top: ($input-height - 10px) / 2;
+            transform: translateY(-50%);
+            left: $input-height;
+            cursor: text;
+            color: var(--secondary-color);
+            font-size: $font-size;
+            user-select: none;
+        }
+
+        // Спеціальні стилі для редактора quill
+        > div + label {
+            top: -1 * ($font-size - 2px);
+            left: 0;
+        }
+
+        // Стилі для іконки/префіксу поля
+        > div:first-of-type {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border: 1px solid #ccc;
+            color: var(--text-color);
+            padding: 5px 10px;
+            height: $input-height - 10px;
+            width: $input-height - 15px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        // Стилі для текстової області
+        textarea {
+            resize: vertical;
+            border-bottom-left-radius: 5px;
+            min-height: 100px;
+        }
+
+        // Стилі для полів введення та текстових областей
+        input, textarea {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            font-size: $font-size;
+            width: 100%;
+            
+            // Спеціальні стилі для звичайних полів введення
+            &:not(textarea) {
+                height: $input-height - 10px;
+                border-left: 0;
+            }
+
+            top: 0;
+            background-color: var(--main-color);
+
+            // Стилі при фокусі, валідності та неактивності
+            &:focus, &:valid, &:disabled {
+                & + label {
+                    top: -1 * ($font-size - 2px);
+                    left: 0;
+                    color: var(--text-color);
+                }
+
+                &::placeholder {
+                    color: var(--weak-color);
+                }
+            }
+
+            // Приховування плейсхолдера за замовчуванням
+            &::placeholder {
+                color: transparent;
+            }
+        }
+
+        // Стилі для підказок у групі
+        .hint {
+            position: absolute;
+            bottom: 0px;
+            transform: translateY(100%);
+            left: 0;
+            width: 100%;
+
+            &:empty {
+                display: none;
+            }
+        }
+    }
+
+    // Стилі для списку правил паролю
+    ul.password-rules {
+        margin-top: 20px;
+        list-style: none;
+        
+        * {
+            font-size: 16px;
+        }
+
+        // Стилі для елементів списку
+        li {
+            padding-left: 25px;
+            position: relative;
+
+            // Іконка для невиконаного правила
+            &::before {
+                content: '';
+                background-image: url('@/assets/img/no_check.svg');
+                background-size: 20px 20px;
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            // Іконка для виконаного правила
+            &.checked::before {
+                background-image: url('@/assets/img/check.svg');
+            }
+        }
+    }
+}

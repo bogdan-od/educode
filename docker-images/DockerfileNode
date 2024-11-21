@@ -1,0 +1,16 @@
+# Використовуємо базовий образ Node.js версії 22.11.0
+FROM node:22.11.0
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо конфігураційний файл з інформацією про версію
+RUN echo "javascript 22.11.0" > config.txt
+# Встановлюємо пакет scanf через npm
+RUN npm install scanf
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

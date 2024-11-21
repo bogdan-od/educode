@@ -1,0 +1,14 @@
+# Використовуємо базовий образ PyPy версії 3.10
+FROM pypy:3.10
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з інформацією про версію PyPy
+RUN echo "pypy 3.10" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

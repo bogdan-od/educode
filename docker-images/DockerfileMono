@@ -1,0 +1,14 @@
+# Використовуємо базовий образ mono версії 6.12
+FROM mono:6.12
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією mono
+RUN echo "csharp_mono 6.12" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

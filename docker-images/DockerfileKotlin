@@ -1,0 +1,22 @@
+# Використовуємо образ JDK
+FROM openjdk:19-jdk-alpine
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+COPY entrypoint.sh /app/entrypoint.sh
+
+RUN echo "kotlin 2.0.21" > config.txt
+
+# Встановлюємо curl та Kotlin
+RUN apk update && \
+    apk add --no-cache bash curl && \
+    curl -Lo kotlin-compiler.zip https://github.com/JetBrains/kotlin/releases/download/v2.0.21/kotlin-compiler-2.0.21.zip && \
+    mkdir /opt/kotlin && \
+    unzip kotlin-compiler.zip -d /opt/kotlin && \
+    rm kotlin-compiler.zip
+
+# Вказуємо шлях до компілятора Kotlin
+ENV PATH="/opt/kotlin/kotlinc/bin:$PATH"
+
+ENTRYPOINT ["sh", "-c"]

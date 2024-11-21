@@ -1,0 +1,14 @@
+# Встановлюємо базовий образ perl версії 5.32
+FROM perl:5.32
+
+# Встановлюємо робочу директорію /app
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh до робочої директорії
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією perl
+RUN echo "perl 5.32" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

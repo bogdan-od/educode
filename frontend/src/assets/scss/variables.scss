@@ -1,0 +1,27 @@
+/* Основні шрифти для сайту */
+$main-font: "IBM Plex Serif", serif;
+$secondary-font: "Vollkorn", serif;
+$form-font: "Nunito Sans", sans-serif;
+$fancy-font: "Great Vibes", cursive;
+
+/* Світла тема */
+body.light {
+    --main-color: rgb(247, 247, 247); /* Основний колір фону */
+    --text-color: rgb(51, 51, 51); /* Колір тексту */
+    --button-bg-cover: 255, 255, 255; /* Колір фону кнопок, він вказується без rgb(), щоб потім його можна було використовувати таким чином: rgba(var(--button-bg-cover), 0.8); */
+    --weak-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1); /* Легка тінь */
+    --strong-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Сильна тінь */
+    --weak-color: #d8d8d8; /* Слабкий колір */
+    --secondary-color: #646464; /* Другорядний колір */
+}
+
+/* Темна тема */
+body.dark {
+    --main-color: rgb(51, 51, 51); /* Основний колір фону */
+    --text-color: rgb(247, 247, 247); /* Колір тексту */
+    --button-bg-cover: 0, 0, 0; /* Колір фону кнопок */
+    --weak-box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.15); /* Легка тінь */
+    --strong-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.8); /* Сильна тінь */
+    --weak-color: #525252; /* Слабкий колір */
+    --secondary-color: #a8a8a8; /* Другорядний колір */
+}

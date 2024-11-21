@@ -1,0 +1,18 @@
+# Використовуємо образ Alpine Linux як базовий
+FROM alpine:3.20
+
+# Встановлюємо NASM та необхідні утиліти
+RUN apk update && \
+    apk add --no-cache nasm gcc libc-dev
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Встановлюємо дані у файл конфігурації
+RUN echo "assembler 0" > config.txt
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Визначаємо команду за замовчуванням для компіляції та запуску коду
+ENTRYPOINT ["sh", "-c"]

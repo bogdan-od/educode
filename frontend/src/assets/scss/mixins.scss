@@ -1,0 +1,12 @@
+// Міксин для створення flex-контейнера
+// @param {string} $align-items - Вирівнювання елементів по вертикалі (за замовчуванням: center)
+// @param {string} $justify-content - Вирівнювання елементів по горизонталі (за замовчуванням: center)
+// @param {string} $flex-direction - Напрямок головної осі (за замовчуванням: row)
+// @param {string} $flex-wrap - Перенос елементів (за замовчуванням: wrap)
+@mixin display-flex($align-items: center, $justify-content: center, $flex-direction: row, $flex-wrap: wrap) {
+    display: flex;
+    align-items: $align-items;
+    justify-content: $justify-content;
+    flex-direction: $flex-direction;
+    flex-wrap: $flex-wrap;
+}

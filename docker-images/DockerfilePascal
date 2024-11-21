@@ -1,0 +1,19 @@
+# Використовуємо образ на основі Debian для кращої сумісності з FPC
+FROM debian:latest
+
+# Оновлюємо пакети та встановлюємо компілятор Free Pascal
+RUN apt-get update && \
+    apt-get install -y fp-compiler && \
+    rm -rf /var/lib/apt/lists/*
+
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+RUN echo "pascal_fpc 0" > config.txt
+
+# Встановлюємо змінну середовища для зручності виклику компілятора FPC
+ENV PATH="/app:${PATH}"
+
+ENTRYPOINT ["sh", "-c"]

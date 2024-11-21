@@ -1,0 +1,14 @@
+# Використовуємо офіційний образ Haskell версії 8.8 як базовий
+FROM haskell:8.8
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо конфігураційний файл з версією Haskell
+RUN echo "haskell 8.8" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

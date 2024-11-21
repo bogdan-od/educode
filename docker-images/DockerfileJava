@@ -1,0 +1,14 @@
+# Використовуємо базовий образ OpenJDK версії 23
+FROM openjdk:23
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо конфігураційний файл з версією Java
+RUN echo "java 23" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

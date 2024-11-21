@@ -1,0 +1,14 @@
+# Використовуємо офіційний образ Rust версії 1.82.0 як базовий
+FROM rust:1.82.0
+
+# Встановлюємо робочу директорію в /app
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією Rust
+RUN echo "rust 1.82.0" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

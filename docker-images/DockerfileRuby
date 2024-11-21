@@ -1,0 +1,23 @@
+# ВикориFROM ruby:3.3-alpine
+
+WORKDIR /app
+
+COPY entrypoint.sh /app/entrypoint.sh
+
+RUN echo "ruby 3.3" > config.txt
+
+ENTRYPOINT ["sh", "-c"]
+стовуємо базовий образ Ruby
+FROM ruby:3.3-alpine
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh до робочої директорії
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією Ruby
+RUN echo "ruby 3.3" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

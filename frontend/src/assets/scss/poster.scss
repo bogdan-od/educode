@@ -1,0 +1,68 @@
+@import '@/assets/scss/mixins.scss';
+@import '@/assets/scss/variables.scss';
+
+// Головний контейнер для постера
+.poster {
+    @include display-flex($justify-content: space-between, $align-items: flex-start);
+    position: relative;
+
+    // Контейнер для текстового вмісту постера
+    div.poster-content {
+        width: 48%;
+        margin-top: 50px;
+
+        // Адаптивність для планшетів
+        @media (max-width: 1024px) {
+            align-self: flex-start;
+        }
+        // Адаптивність для малих планшетів
+        @media (max-width: 710px) {
+            width: 80%;
+        }
+        // Адаптивність для мобільних пристроїв
+        @media (max-width: 500px) {
+            width: 100%;
+        }
+
+        // Стилізація заголовка
+        h1 {
+            font-size: 3.5em;
+            line-height: 120%;
+
+            // Зменшення розміру шрифту для планшетів
+            @media (max-width: 1024px) {
+                font-size: 3em;
+            }
+            // Зменшення розміру шрифту для малих екранів
+            @media (max-width: 860px) {
+                font-size: 2.5em;
+            }
+        }
+
+        // Відступи між елементами контенту
+        > *:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+
+    // Стилізація зображення постера
+    img {
+        height: calc(100vh - 210px);
+        width: 48%;
+        object-fit: contain;
+        user-select: none;
+        pointer-events: none;
+
+        // Позиціонування зображення на планшетах
+        @media (max-width: 1024px) {
+            object-position: 0 120px;
+        }
+        // Адаптація зображення для малих екранів
+        @media (max-width: 710px) {
+            width: 100%;
+            opacity: 0.3;
+            position: absolute;
+            object-position: center;
+        }
+    }
+}

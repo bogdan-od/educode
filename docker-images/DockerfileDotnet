@@ -1,0 +1,14 @@
+# Використовуємо офіційний образ .NET SDK 8.0 як базовий
+FROM mcr.microsoft.com/dotnet/sdk:8.0
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо файл конфігурації з версією .NET
+RUN echo "csharp_dotnet 8.0" > config.txt
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]

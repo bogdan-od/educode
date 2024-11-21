@@ -1,0 +1,17 @@
+# Використовуємо офіційний образ gcc версії 14.2 як базовий
+FROM gcc:14.2
+
+# Встановлюємо робочу директорію
+WORKDIR /app
+
+# Копіюємо скрипт entrypoint.sh в робочу директорію
+COPY entrypoint.sh /app/entrypoint.sh
+
+# Створюємо конфігураційний файл з версією d_gdc
+RUN echo "d_gdc 14.2" > config.txt
+
+# Оновлюємо пакети та встановлюємо компілятор D (GDC)
+RUN apt-get update && apt-get install -y gdc
+
+# Встановлюємо точку входу для контейнера
+ENTRYPOINT ["sh", "-c"]
