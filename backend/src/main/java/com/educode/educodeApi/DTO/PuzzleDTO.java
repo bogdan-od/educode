@@ -65,7 +65,7 @@ public class PuzzleDTO {
         this.timeLimit = puzzle.getTimeLimit();
         this.score = puzzle.getScore();
         // Обробка та обмеження тестових даних
-        this.puzzleData = puzzle.getPuzzleData().stream().sorted(Comparator.comparing(PuzzleData::getId).reversed()).limit(puzzle.getPuzzleData().size() <= 8 ? 1 : 3).map(puzzleData -> {
+        this.puzzleData = puzzle.getPuzzleData().stream().sorted(Comparator.comparing(PuzzleData::getId)).limit(puzzle.getPuzzleData().size() <= 8 ? 1 : 3).map(puzzleData -> {
             PuzzleData newPuzzleData = new PuzzleData();
             newPuzzleData.setInput(puzzleData.getInput());
             newPuzzleData.setOutput(puzzleData.getOutput());
