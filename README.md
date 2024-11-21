@@ -45,6 +45,7 @@ This project is a web application for learning programming through practical cha
     ```bash
     mvn clean install
     java -jar target/your-app.jar
+    // In backend\src\main\java\com\educode\educodeApi\config\WebConfig.java replace .allowedOrigins("*") with .allowedOrigins("your-frontend-url")
 ## Frontend Setup:
 - Install Node.js and npm.
 - Change the VUA_APP_API_URL (./frontend/.env) environment variable to the URL of your API
