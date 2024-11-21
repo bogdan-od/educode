@@ -53,7 +53,7 @@
                         </select>
                         <!-- Завантаження файлу з кодом -->
                         <input type="file" id="uploadCode" @change="onFileUpload" accept="*/*">
-                        <label for="uploadCode"><i class="fa-regular fa-folder-open"></i> Завантажити код з компьютеру</label>
+                        <label for="uploadCode"><i class="fa-regular fa-folder-open"></i> Завантажити код з комп'ютеру</label>
                     </div>
                     <div class="right">
                         <!-- Кнопки керування -->
