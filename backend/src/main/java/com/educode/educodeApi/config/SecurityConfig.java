@@ -27,10 +27,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Налаштування фільтра безпеки для додатку
-        return http.csrf(AbstractHttpConfigurer::disable)
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
+                .securityContext(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
                         auth.anyRequest().permitAll() // Дозвіл на всі запити
-                ).build();
+                )
+                .build();
     }
 
     @Bean
@@ -61,7 +67,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityContextPersistenceFilter securityContextPersistenceFilter() {
-        // Створення фільтра для збереження контексту безпеки
         return new SecurityContextPersistenceFilter();
     }
 }

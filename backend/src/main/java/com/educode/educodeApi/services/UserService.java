@@ -1,12 +1,11 @@
 package com.educode.educodeApi.services;
 
-import com.educode.educodeApi.functional.GlobalVariables;
+import com.educode.educodeApi.functional.RequestContext;
 import com.educode.educodeApi.models.User;
 import com.educode.educodeApi.repositories.UserRepository;
 import com.educode.educodeApi.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,6 +18,8 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private RequestContext requestContext;
 
     /**
      * Отримує поточного автентифікованого користувача.
@@ -26,7 +27,7 @@ public class UserService {
      */
     public User getAuthUser() {
         // Отримуємо дані автентифікації з контексту безпеки
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = requestContext.getAuthentication();
 
         if (auth == null)
             return null;
@@ -43,7 +44,7 @@ public class UserService {
      * @return true якщо користувач автентифікований, false - якщо ні
      */
     public Boolean isAuth() {
-        return SecurityContextHolder.getContext().getAuthentication() != null;
+        return requestContext.getAuthentication() != null;
     }
 
     /**
@@ -52,10 +53,10 @@ public class UserService {
      */
     public String getAccessToken() {
         // Перевіряємо наявність JWT токену
-        if (GlobalVariables.jwtToken == null) return null;
+        if (requestContext.getJwtToken() == null) return null;
         try {
             // Витягуємо токен доступу з JWT
-            return jwtUtil.extractAccessToken(GlobalVariables.jwtToken, true);
+            return jwtUtil.extractAccessToken(requestContext.getJwtToken(), true);
         } catch (Exception e) {
             return null;
         }

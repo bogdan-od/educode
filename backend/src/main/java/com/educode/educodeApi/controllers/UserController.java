@@ -4,7 +4,7 @@ import com.educode.educodeApi.DTO.LoginDTO;
 import com.educode.educodeApi.DTO.RefreshTokenDTO;
 import com.educode.educodeApi.DTO.SessionDTO;
 import com.educode.educodeApi.DTO.UserDTO;
-import com.educode.educodeApi.functional.GlobalVariables;
+import com.educode.educodeApi.functional.RequestContext;
 import com.educode.educodeApi.models.*;
 import com.educode.educodeApi.repositories.*;
 import com.educode.educodeApi.security.MyUserDetails;
@@ -24,7 +24,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.educode.educodeApi.services.JwtUtil;
@@ -64,6 +63,8 @@ public class UserController {
     private PuzzleRepository puzzleRepository;
     @Autowired
     private PuzzleDataRepository puzzleDataRepository;
+    @Autowired
+    private RequestContext requestContext;
 
     /**
      * Метод для реєстрації нового користувача
@@ -165,7 +166,7 @@ public class UserController {
             // У відповідь замість токену доступу додаємо JWT токен з інформацією про користувача та ролі
             String accessTokenString = jwtUtil.generateToken(login, accessToken.getToken(), myUser.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            requestContext.setAuthentication(authentication);
 
             Map<String, String> response = new HashMap<>();
             response.put("success", "Ви успішно авторизувалися!");
@@ -231,7 +232,7 @@ public class UserController {
             response.put("refresh_token", refreshToken.getToken());
 
             // Оновлюємо глобальну змінну tokenExpired на false, щоб у AuthRequestFilter не виконувалося перевірку на прострочення токену
-            GlobalVariables.tokenExpired = false;
+            requestContext.setTokenExpired(false);
             return ResponseEntity.ok().body(response);
         } else {
             response.put("error", "Токени не знайдено!");

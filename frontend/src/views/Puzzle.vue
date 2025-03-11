@@ -535,6 +535,52 @@ export default {
                     version: 'latest'
                 }
             ],
+            // Дефолтний код для кожної мови програмування
+            languages_default_code: {
+                'assembler:latest': 'section .data\n    msg db "Hello, World!", 10\n    msglen equ $ - msg\n\nsection .text\n    global _start\n\n_start:\n    mov rax, 1      ; syscall: write\n    mov rdi, 1      ; file descriptor: STDOUT\n    mov rsi, msg    ; message to write\n    mov rdx, msglen ; message length\n    syscall         ; call kernel\n    \n    mov rax, 60     ; syscall: exit\n    xor rdi, rdi    ; return code 0\n    syscall         ; call kernel',
+                
+                'cpp-with-gmp:14.2': '#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <string>\n#include <map>\n#include <set>\n#include <queue>\n#include <stack>\n#include <cmath>\n#include <numeric>\n#include <iomanip>\n#include <gmpxx.h>\n\nusing namespace std;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    // Big Integer example\n    mpz_class a, b;\n    cin >> a >> b;\n    cout << "Sum: " << a + b << "\\n";\n    \n    return 0;\n}',
+                
+                'dotnet:8.0': 'using System;\nusing System.Collections.Generic;\nusing System.Linq;\n\nclass Program {\n    static void Main(string[] args) {\n        // Input handling\n        string[] tokens = Console.ReadLine().Split();\n        int n = int.Parse(tokens[0]);\n        \n        // Your solution here\n        \n        // Output\n        Console.WriteLine("Result: " + n);\n    }\n}',
+                
+                'java:23': 'import java.util.*;\nimport java.io.*;\n\npublic class Main {\n    static FastReader in = new FastReader();\n    \n    public static void main(String[] args) {\n        int n = in.nextInt();\n        \n        // Your solution here\n        \n        System.out.println("Result: " + n);\n    }\n    \n    static class FastReader {\n        BufferedReader br;\n        StringTokenizer st;\n        \n        public FastReader() {\n            br = new BufferedReader(new InputStreamReader(System.in));\n        }\n        \n        String next() {\n            while (st == null || !st.hasMoreElements()) {\n                try {\n                    st = new StringTokenizer(br.readLine());\n                } catch (IOException e) {\n                    e.printStackTrace();\n                }\n            }\n            return st.nextToken();\n        }\n        \n        int nextInt() { return Integer.parseInt(next()); }\n        long nextLong() { return Long.parseLong(next()); }\n        double nextDouble() { return Double.parseDouble(next()); }\n        String nextLine() {\n            String str = "";\n            try {\n                str = br.readLine();\n            } catch (IOException e) {\n                e.printStackTrace();\n            }\n            return str;\n        }\n    }\n}',
+                
+                'node:22.11.0': 'const scanf = require(\'scanf\');\n\nfunction main() {\n\tconst n = scanf(\'%d\');\n\t\n\t// Your solution here\n\t\n\tconsole.log(`Result: ${n}`);\n}\n\nmain();',
+                
+                'pypy:3.10': 'def solve():\n    n = int(input())\n    \n    # Your solution here\n    \n    print(f"Result: {n}")\n\nif __name__ == "__main__":\n    solve()',
+                
+                'rust:1.82.0': 'use std::io::{self, BufRead};\n\nfn main() {\n    let stdin = io::stdin();\n    let mut lines = stdin.lock().lines();\n    \n    let n: i32 = lines.next().unwrap().unwrap().parse().unwrap();\n    \n    // Your solution here\n    \n    println!("Result: {}", n);\n}',
+                
+                'c:10.2': '#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <math.h>\n#include <stdbool.h>\n\n#define MAX(a, b) ((a) > (b) ? (a) : (b))\n#define MIN(a, b) ((a) < (b) ? (a) : (b))\n\nint main() {\n    int n;\n    scanf("%d", &n);\n    \n    // Your solution here\n    \n    printf("Result: %d\\n", n);\n    \n    return 0;\n}',
+                
+                'dart:3.5': 'import \'dart:io\';\nimport \'dart:math\';\nimport \'dart:collection\';\n\nvoid main() {\n  int n = int.parse(stdin.readLineSync()!);\n  \n  // Your solution here\n  \n  print("Result: $n");\n}',
+                
+                'go:1.20': 'package main\n\nimport (\n\t"bufio"\n\t"fmt"\n\t"os"\n\t"strconv"\n)\n\nfunc main() {\n\tscanner := bufio.NewScanner(os.Stdin)\n\tscanner.Scan()\n\tn, _ := strconv.Atoi(scanner.Text())\n\t\n\t// Your solution here\n\t\n\tfmt.Printf("Result: %d\\n", n)\n}',
+                
+                'kotlin:2.0.21': 'import java.util.*\n\nfun main() {\n    val scanner = Scanner(System.`in`)\n    val n = scanner.nextInt()\n    \n    // Your solution here\n    \n    println("Result: $n")\n}',
+                
+                'perl:5.32': '#!/usr/bin/perl\nuse strict;\nuse warnings;\n\nmy $n = <STDIN>;\nchomp $n;\n\n# Your solution here\n\nprint "Result: $n\\n";',
+                
+                'python:3.11': 'def solve():\n    n = int(input())\n    \n    # Your solution here\n    \n    print(f"Result: {n}")\n\nif __name__ == "__main__":\n    solve()',
+                
+                'swift:5.6': 'import Foundation\n\nfunc readLine(_ separator: Character = " ") -> [String] {\n    readLine()!.split(separator: separator).map(String.init)\n}\n\nlet n = Int(readLine()[0])!\n\n// Your solution here\n\nprint("Result: \\(n)")',
+                
+                'cpp:14.2': '#include <iostream>\n#include <vector>\n#include <algorithm>\n#include <string>\n#include <map>\n#include <set>\n#include <queue>\n#include <stack>\n#include <cmath>\n#include <numeric>\n#include <iomanip>\n\n#define all(x) (x).begin(), (x).end()\n#define rall(x) (x).rbegin(), (x).rend()\n#define pb push_back\n#define mp make_pair\n#define F first\n#define S second\n\nusing namespace std;\nusing ll = long long;\nusing pii = pair<int, int>;\nusing pll = pair<ll, ll>;\n\nconst int INF = 1e9 + 7;\nconst ll LLINF = 1e18 + 7;\n\nint main() {\n    ios::sync_with_stdio(false);\n    cin.tie(nullptr);\n    \n    int n;\n    cin >> n;\n    \n    // Your solution here\n    \n    cout << "Result: " << n << "\\n";\n    \n    return 0;\n}',
+                
+                'd-gdc:14.2': 'import std.stdio;\nimport std.string;\nimport std.algorithm;\nimport std.conv;\nimport std.array;\nimport std.math;\nimport std.range;\n\nvoid main() {\n    int n = readln.strip.to!int;\n    \n    // Your solution here\n    \n    writefln("Result: %d", n);\n}',
+                
+                'haskell:8.8': 'import Control.Monad\nimport Data.List\nimport Data.Maybe\nimport qualified Data.Map as Map\nimport qualified Data.Set as Set\n\nmain :: IO ()\nmain = do\n    n <- readLn :: IO Int\n    \n    -- Your solution here\n    \n    putStrLn $ "Result: " ++ show n',
+                
+                'mono:6.12': 'using System;\nusing System.Collections.Generic;\nusing System.Linq;\n\nclass Program {\n    static void Main(string[] args) {\n        // Input handling\n        string[] tokens = Console.ReadLine().Split();\n        int n = int.Parse(tokens[0]);\n        \n        // Your solution here\n        \n        // Output\n        Console.WriteLine("Result: " + n);\n    }\n}',
+                
+                'php:8.2': '<?php\n\nfunction readInput() {\n    return trim(fgets(STDIN));\n}\n\n$n = intval(readInput());\n\n// Your solution here\n\necho "Result: " . $n . "\\n";\n',
+                
+                'ruby:3.3': 'def solve\n  n = gets.to_i\n  \n  # Your solution here\n  \n  puts "Result: #{n}"\nend\n\nsolve',
+                
+                'lua:latest': 'local function solve()\n    local n = tonumber(io.read())\n    \n    -- Your solution here\n    \n    print("Result: " .. n)\nend\n\nsolve()',
+                
+                'pascal:latest': 'program Solution;\n\nvar\n  n: Integer;\n\nbegin\n  ReadLn(n);\n  \n  { Your solution here }\n  \n  WriteLn(\'Result: \', n);\nend.'
+            },
             activePanel: 'input', // Активна панель (введення/вивід/тест)
             outputData: '', // Дані виводу програми
             selectedServerLanguage: 'python:3.11', // Обрана мова програмування
@@ -558,6 +604,8 @@ export default {
             this.updateEditorInfo();
         },
         selectedServerLanguage() {
+            this.userCode = this.languages_default_code[this.selectedServerLanguage] ?? '';
+
             this.updateEditorInfo();
         },
     },
@@ -605,6 +653,9 @@ export default {
                         const savedDataObject = JSON.parse(savedData);
                         this.selectedServerLanguage = savedDataObject.language;
                         this.userCode = savedDataObject.code;
+                    } else {
+                        this.selectedServerLanguage = 'python:3.11';
+                        this.userCode = this.languages_default_code[this.selectedServerLanguage] ?? '';
                     }
 
                     this.isLoading = false;

@@ -17,7 +17,10 @@ public class Decision {
     private Long id;
 
     // Код рішення та мова програмування
-    private String code, language;
+    @Column(columnDefinition = "TEXT")
+    private String code;
+
+    private String language;
 
     // Оцінка за рішення
     private Float score;

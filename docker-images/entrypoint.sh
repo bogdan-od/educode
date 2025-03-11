@@ -127,7 +127,7 @@ case "$ACTION" in
 		    g++ -std="c++$LANG_VERSION" $FILE -o $OUTPUT
 		    ;;
 		"cpp_gmp")
-		    g++ -std="c++$LANG_VERSION" $FILE -lgmp -o $OUTPUT
+		    g++ -std="c++$LANG_VERSION" $FILE -lgmpxx -lgmp -o $OUTPUT
 		    ;;
 		"csharp_dotnet")
 		    dotnet new console -n program
@@ -150,6 +150,9 @@ case "$ACTION" in
 		    ;;
 		"java")
 		    javac $FILE
+		    ;;
+	        "kotlin")
+	            kotlinc $FILE -include-runtime -d $OUTPUT
 		    ;;
 		"javascript")
 		    ;;

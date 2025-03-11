@@ -17,15 +17,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingResponseWrapper;
@@ -46,6 +42,7 @@ public class AuthRequestFilter extends OncePerRequestFilter {
     private final AccessTokenRepository accessTokenRepository;
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
+    private final RequestContext requestContext;
 
     /**
      * Конструктор фільтра автентифікації.
@@ -56,12 +53,13 @@ public class AuthRequestFilter extends OncePerRequestFilter {
      * @param sessionRepository Репозиторій сесій
      */
     @Autowired
-    public AuthRequestFilter(UserDetailsService userDetailsService, JwtUtil jwtUtil, AccessTokenRepository accessTokenRepository, UserRepository userRepository, SessionRepository sessionRepository) {
+    public AuthRequestFilter(UserDetailsService userDetailsService, JwtUtil jwtUtil, AccessTokenRepository accessTokenRepository, UserRepository userRepository, SessionRepository sessionRepository, RequestContext requestContext) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
         this.accessTokenRepository = accessTokenRepository;
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
+        this.requestContext = requestContext;
     }
 
     /**
@@ -84,7 +82,8 @@ public class AuthRequestFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             // Витягуємо JWT токен з заголовка
             jwt = authorizationHeader.substring(7);
-            GlobalVariables.jwtToken = jwt;
+            requestContext.setJwtToken(jwt);
+
             try {
                 // Витягуємо токен доступу з JWT токена
                 accessTokenString = jwtUtil.extractAccessToken(jwt);
@@ -101,11 +100,11 @@ public class AuthRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 // Обробка простроченого JWT токена, видаляємо його у користувача
                 ContentCachingResponseWrapper responseWrapper = new ContentCachingResponseWrapper(response);
-                GlobalVariables.tokenExpired = true;
+                requestContext.setTokenExpired(true);
 
                 chain.doFilter(request, responseWrapper);
 
-                if (GlobalVariables.tokenExpired) {
+                if (requestContext.isTokenExpired()) {
                     Map<String, Object> responseNewValues = new HashMap<>();
                     responseNewValues.put("del_access_token", "1");
                     responseNewValues.put("del_refresh_token", "1");
@@ -125,7 +124,7 @@ public class AuthRequestFilter extends OncePerRequestFilter {
         }
 
         // Перевірка автентифікації
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = requestContext.getAuthentication();
         if (accessTokenString != null && (authentication == null || authentication instanceof AnonymousAuthenticationToken)) {
             Optional<AccessToken> accessToken = accessTokenRepository.findByToken(accessTokenString);
             User myUser = null;
@@ -154,12 +153,7 @@ public class AuthRequestFilter extends OncePerRequestFilter {
 
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-            // Створення сесії
-            SecurityContext securityContext = SecurityContextHolder.getContext();
-            HttpSession session = request.getSession(true);
-            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, securityContext);
+            requestContext.setAuthentication(usernamePasswordAuthenticationToken);
         }
         chain.doFilter(request, response);
     }

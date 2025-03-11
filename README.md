@@ -40,7 +40,7 @@ This project is a web application for learning programming through practical cha
 
 ## Backend Setup:
 - Install Java 17+ and Maven.
-- Configure application.yml for your MySQL database.
+- Configure application.properties for your MySQL database.
 - Build and run:
     ```bash
     mvn clean install

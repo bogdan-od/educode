@@ -8,6 +8,7 @@ const apiClient = axios.create({
   baseURL: process.env.VUA_APP_API_URL,
   headers: {
     "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
   },
 });
 

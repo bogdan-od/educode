@@ -34,7 +34,7 @@ for dockerfile in "${!dockerfiles[@]}"; do
     if [ -f "$dockerfile" ]; then
         echo "Building Docker image: $image_name from $dockerfile"
         # Збираємо образ
-        docker build -t "$image_name" -f "$dockerfile" .
+        sudo docker build -t "$image_name" -f "$dockerfile" .
     else
         echo "Warning: $dockerfile does not exist. Skipping."
     fi

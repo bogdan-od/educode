@@ -108,7 +108,7 @@ public class CodeService {
 
         // Збірка коду в контейнері за допомогою entrypoint.sh з опцією build
         ProcessBuilder buildContainer = new ProcessBuilder(
-                "docker", "exec", "-i", containerName, "./entrypoint.sh", "build", code
+                "docker", "exec", "-i", containerName, "./entrypoint.sh", "build", preserveEscapeSequences(code)
         );
 
         Process buildProcess = buildContainer.start();
@@ -228,5 +228,28 @@ public class CodeService {
             throw endException[0];
 
         return output[0];
+    }
+
+    /**
+     * Зберігає escape-послідовності в коді, додаючи додатковий слеш перед ними.
+     *
+     * @param code Вхідний код, який містить escape-послідовності
+     * @return Рядок з обробленими escape-послідовностями
+     */
+    private String preserveEscapeSequences(String code) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < code.length(); i++) {
+            char c = code.charAt(i);
+            if (c == '\\' && i + 1 < code.length()) {
+                char next = code.charAt(i + 1);
+                // Додаємо додатковий слеш перед escape-послідовностями
+                result.append("\\\\");
+                result.append(next);
+                i++; // Пропускаємо наступний символ, оскільки ми його вже обробили
+            } else {
+                result.append(c);
+            }
+        }
+        return result.toString();
     }
 }
