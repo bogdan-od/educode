@@ -97,10 +97,17 @@ public class CodeService {
 
         // Створення контейнера -
         // --memory - обмеження пам'яті
+        // --cpus - обмеження кількості процесорів
+        // --pids-limit - обмеження кількості процесів
+        // --security-opt seccomp - обмеження доступу до системних викликів
+        // --cap-drop - видалення привілеїв
         // --network none - не дозволяє контейнеру використовувати мережу
         // tail -f /dev/null - запуск контейнера в режимі очікування
         ProcessBuilder createContainer = new ProcessBuilder(
-                "docker", "run", "--name", containerName, String.format("--memory=%dm", memoryLimit), "-d", "--network", "none", dockerImage, "tail -f /dev/null"
+                "docker", "run", "--name", containerName, String.format("--memory=%dm", memoryLimit),
+                "--cpus=1", "--pids-limit=50",
+                "--security-opt", "seccomp=/etc/seccomp/docker_minimal.json", "--cap-drop=ALL",
+                "-d", "--network", "none", dockerImage, "tail -f /dev/null"
         );
 
         // Запуск контейнера
