@@ -1,4 +1,4 @@
-# EduCode - Programming Learning Platform
+# Educode - Programming Learning Platform
 
 ## ⚠️ Important Notice
 
@@ -12,7 +12,7 @@ For access to the complete implementation, please contact: **[bogdan040275@ukr.n
 
 ## Overview
 
-EduCode is a web-based platform for learning programming through practical challenges. It features secure code execution in isolated Docker containers, flexible task verification systems, and hierarchical access control for educational organizations.
+Educode is a web-based platform for learning programming through practical challenges. It features secure code execution in isolated Docker containers, flexible task verification systems, and hierarchical access control for educational organizations.
 
 **Note:** Some implementation details have been removed or simplified in this public version.
 
