@@ -1,7 +1,7 @@
 package com.educode.educodeApi.DTO;
 
-import com.educode.educodeApi.models.Decision;
-import com.educode.educodeApi.models.User;
+import com.educode.educodeApi.DTO.puzzle.PuzzleDTO;
+import com.educode.educodeApi.DTO.user.UserDTO;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +16,7 @@ public class DecisionDTO {
     private PuzzleDTO puzzle;
     private LocalDateTime createdAt;
     private UserDTO user;
+    private String code;
 
     /**
      * Конструктор за замовчуванням для створення порожнього об'єкту DecisionDTO
@@ -23,19 +24,32 @@ public class DecisionDTO {
     public DecisionDTO() {
     }
 
-    /**
-     * Конструктор для створення DTO об'єкту з існуючого рішення
-     * @param decision об'єкт рішення з якого створюється DTO
-     */
-    public DecisionDTO(Decision decision) {
-        this.id = decision.getId();
-        this.language = decision.getLanguage();
-        this.score = decision.getScore();
-        this.isCorrect = decision.isCorrect();
-        this.isFinished = decision.isFinished();
-        this.puzzle = new PuzzleDTO(decision.getPuzzle(), true);
-        this.createdAt = decision.getCreatedAt();
-        this.user = decision.getUser() != null ? new UserDTO(decision.getUser()) : null;
+//    /**
+//     * Конструктор для створення DTO об'єкту з існуючого рішення
+//     * @param decision об'єкт рішення з якого створюється DTO
+//     */
+//    public DecisionDTO(Decision decision) {
+//        this.id = decision.getId();
+//        this.language = decision.getLanguage();
+//        this.score = decision.getScore();
+//        this.isCorrect = decision.isCorrect();
+//        this.isFinished = decision.isFinished();
+//        this.puzzle = new PuzzleDTO(decision.getPuzzle(), true);
+//        this.createdAt = decision.getCreatedAt();
+//        this.user = decision.getUser() != null ? new UserDTO(decision.getUser()) : null;
+//    }
+
+
+    public DecisionDTO(Long id, String language, Float score, boolean isCorrect, boolean isFinished, PuzzleDTO puzzle, LocalDateTime createdAt, UserDTO user, String code) {
+        this.id = id;
+        this.language = language;
+        this.score = score;
+        this.isCorrect = isCorrect;
+        this.isFinished = isFinished;
+        this.puzzle = puzzle;
+        this.createdAt = createdAt;
+        this.user = user;
+        this.code = code;
     }
 
     public Long getId() {
@@ -100,5 +114,13 @@ public class DecisionDTO {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

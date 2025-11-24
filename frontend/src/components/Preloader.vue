@@ -1,7 +1,7 @@
 <!-- Компонент для відображення прелоадера (індикатора завантаження) -->
 <template>
     <!-- Основний контейнер прелоадера з динамічними класами та фоном -->
-    <div class="preloader" :class="{'full-screen': fullScreen, 'dark-theme': this.$store.getters.getThemeMode == 'dark'}" :style="`--bg: ${bg}`">
+    <div class="preloader" :class="{'full-screen': fullScreen, 'dark-theme': this.$store.getters.getThemeMode == 'dark'}" :style="`--bg: ${bg}; --preloader-height: ${height}; --preloader-width: ${width}`">
         <!-- Зображення прелоадера -->
         <img :src="img" alt="Loading...">
     </div>
@@ -13,15 +13,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    width: 100%;
+    height: var(--preloader-height);
+    width: var(--preloader-width);
     max-width: 100vw;
     max-height: 100vh;
     background-color: var(--bg);
     top: 0;
     left: 0;
     z-index: 10000;
-    position: absolute;
+    position: relative;
 
     /* Стилі для повноекранного режиму */
     &.full-screen {
@@ -56,6 +56,8 @@ export default {
         fullScreen: {type: Boolean, required: false, default: false}, // Повноекранний режим
         size: {type: String, required: false, default: "big"}, // Розмір прелоадера
         bg: {type: String, required: false, default: "var(--main-color)"}, // Колір фону
+        width: {type: String, required: false, default: "100%"},
+        height: {type: String, required: false, default: "100%"}
     },
     // Дані компонента
     data() {

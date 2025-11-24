@@ -1,13 +1,12 @@
 package com.educode.educodeApi.models;
 
+import com.educode.educodeApi.enums.PermissionType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Клас, що представляє користувача в додатку.
@@ -22,27 +21,15 @@ public class User {
     private Long id;
 
     // Ім'я користувача
-    @NotBlank(message = "Ім'я не може бути порожнім")
-    @Size(min = 3, message = "Ім'я повинно містити принаймні 3 символи")
-    @Size(max = 20, message = "Ім'я повинно містити максимум 20 символів")
     private String name;
 
     // Логін користувача
-    @NotBlank(message = "Логін не може бути порожнім")
-    @Size(min = 3, message = "Логін повинен містити принаймні 3 символи")
-    @Size(max = 20, message = "Логін повинен містити максимум 20 символів")
-    @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Логін повинен складатися тільки з латинських букв, цифр і \"_\"")
     private String login;
 
     // Email користувача
-    @NotBlank(message = "Електронна пошта не може бути порожньою")
-    @Email(message = "Неправильний формат електронної пошти")
-    @Size(max = 50, message = "Електронна пошта повинна містити максимум 50 символів")
     private String email;
 
     // Пароль
-    @NotBlank(message = "Пароль не може бути порожнім")
-    @Size(min = 8, message = "Пароль повинен містити принаймні 8 символів")
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
 
@@ -74,6 +61,16 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Puzzle> puzzles = new HashSet<>();
 
+    // Програми, що перевіряють рішення користувачів, створені користувачем
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Checker> checkers = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Notification> notifications = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<TreeNodeMember> treeNodeMembers = new HashSet<>();
+
     /**
      * Конструктор за замовчуванням
      */
@@ -94,7 +91,7 @@ public class User {
      * @param decisions Рішення користувача
      * @param puzzles Задачі користувача
      */
-    public User(Long id, String name, String login, String email, String password, Integer rating, Set<Role> roles, Set<AccessToken> accessTokens, Set<RefreshToken> refreshTokens, Set<Session> sessions, Set<Decision> decisions, Set<Puzzle> puzzles) {
+    public User(Long id, String name, String login, String email, String password, Integer rating, Set<Role> roles, Set<AccessToken> accessTokens, Set<RefreshToken> refreshTokens, Set<Session> sessions, Set<Decision> decisions, Set<Puzzle> puzzles, Set<Checker> checkers) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -107,6 +104,14 @@ public class User {
         this.sessions = sessions;
         this.decisions = decisions;
         this.puzzles = puzzles;
+        this.checkers = checkers;
+    }
+
+    public User(String name, String login, String email, String password) {
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.password = password;
     }
 
     public Set<Puzzle> getPuzzles() {
@@ -211,5 +216,74 @@ public class User {
 
     public void setSessions(Set<Session> sessions) {
         this.sessions = sessions;
+    }
+
+    public Set<Checker> getCheckers() {
+        return checkers;
+    }
+
+    public void setCheckers(Set<Checker> checkers) {
+        this.checkers = checkers;
+    }
+
+    public Set<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(Set<Notification> notifications) {
+        this.notifications = notifications;
+    }
+
+    public boolean hasRole(String roleType) {
+        return roles.stream().anyMatch(role -> Objects.equals(role.getName(), roleType));
+    }
+
+    public boolean hasRoles(Set<String> roleTypes) {
+        return roles.stream().map(Role::getName).collect(Collectors.toSet()).containsAll(roleTypes);
+    }
+
+    public boolean hasPermission(PermissionType permission) {
+        return roles.stream().anyMatch(role -> role.hasPermission(permission));
+    }
+
+    public boolean hasPermissions(Set<PermissionType> permissions) {
+        return getAllPermissions().containsAll(permissions);
+    }
+
+    public Set<PermissionType> getAllPermissions() {
+        return roles.stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .collect(Collectors.toSet());
+    }
+
+    public Set<TreeNodeMember> getTreeNodeMembers() {
+        return treeNodeMembers;
+    }
+
+    public void setTreeNodeMembers(Set<TreeNodeMember> treeNodeMembers) {
+        this.treeNodeMembers = treeNodeMembers;
+    }
+
+    public Set<TreeNode> getTreeNodes() {
+        return treeNodeMembers.stream().map(TreeNodeMember::getTreeNode).collect(Collectors.toSet());
+    }
+
+    public void addChecker(Checker checker) {
+        checkers.add(checker);
+        checker.setUser(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        User that = (User) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

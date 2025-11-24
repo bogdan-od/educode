@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Entity
 @Table(name = "sessions")
-public class Session {
+public class Session implements BeforeRealUpdate {
 
     // Унікальний ідентифікатор сесії
     @Id
@@ -139,5 +139,19 @@ public class Session {
 
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        Session that = (Session) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Entity
 @Table(name = "refresh_tokens")
-public class RefreshToken {
+public class RefreshToken implements BeforeRealUpdate {
 
     // Унікальний ідентифікатор токену оновлення
     @Id
@@ -41,15 +41,17 @@ public class RefreshToken {
      */
     @PrePersist
     public void prePersist() {
-        this.validUntil = LocalDateTime.now().plus(30, TimeUnit.DAYS.toChronoUnit());
+        if (this.validUntil == null) {
+            this.validUntil = LocalDateTime.now().plus(30, TimeUnit.DAYS.toChronoUnit());
+        }
     }
 
     /**
      * Метод, що викликається перед оновленням токену.
      * Оновлює термін дії токену на 30 днів від поточного часу.
      */
-    @PreUpdate
-    public void preUpdate() {
+    @Override
+    public void preRealUpdate() {
         this.validUntil = LocalDateTime.now().plus(30, TimeUnit.DAYS.toChronoUnit());
     }
 
@@ -112,5 +114,19 @@ public class RefreshToken {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        RefreshToken that = (RefreshToken) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

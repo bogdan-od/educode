@@ -6,6 +6,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -30,10 +32,17 @@ public class MyUserDetails implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Перетворюємо ролі користувача в об'єкти SimpleGrantedAuthority
-        return user.getRoles().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+        Set<GrantedAuthority> authorities = new HashSet<>();
+
+        authorities.addAll(user.getAllPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.asString()))
+                .collect(Collectors.toSet()));
+
+        authorities.addAll(user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.asAuthority())).
+                collect(Collectors.toSet()));
+
+        return authorities;
     }
 
     // Інші методи, що реалізують інтерфейс UserDetails

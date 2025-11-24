@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { DefinePlugin } = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 
 module.exports = {
   // Встановлення режиму збірки (production або development)
@@ -17,6 +18,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     clean: true,
     publicPath: '/',
+    crossOriginLoading: false,
+    globalObject: 'self'
   },
   // Налаштування модулів та правил обробки файлів
   module: {
@@ -132,12 +135,36 @@ module.exports = {
     client: {
       overlay: true,
     },
+    headers: {
+      'Cross-Origin-Embedder-Policy': 'credentialless',
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
+    setupMiddlewares: (middlewares, devServer) => {
+      // Middleware для обработки worker файлов
+      devServer.app.get('/*.worker.js', (req, res, next) => {
+        res.set({
+          'Content-Type': 'application/javascript; charset=utf-8',
+          'Cache-Control': 'no-cache',
+        });
+        next();
+      });
+      
+      return middlewares;
+    },
   },
   // Налаштування оптимізації
   optimization: {
     splitChunks: {
       chunks: 'all',
-      name: false,
+      cacheGroups: {
+        monacoEditor: {
+          test: /[\\/]node_modules[\\/]monaco-editor[\\/]/,
+          name: 'monaco-editor',
+          chunks: 'all',
+          priority: 10,
+          enforce: true,
+        },
+      },
     },
   },
   // Налаштування плагінів
@@ -158,6 +185,23 @@ module.exports = {
     new Dotenv({
       path: '.env',
       systemvars: true,
+    }),
+    new MonacoWebpackPlugin({
+      // Указываем какие языки нужны
+      languages: [
+        'javascript',
+        'cpp', 'csharp', 'java', 'python', 'rust', 'go', 'php',
+        'ruby', 'swift', 'kotlin', 'dart', 'pascal', 'perl', 'lua',
+        'haskell', 'plaintext'
+      ],
+      features: [
+        'bracketMatching', 'clipboard', 'codeAction', 'coreCommands', 
+        'find', 'folding', 'format', 'hover', 'linesOperations', 
+        'multicursor', 'suggest', 'wordHighlighter', 'wordOperations',
+        'gotoLine', 'indentation'
+      ],
+      publicPath: '/',
+      globalAPI: false,
     })
   ],
 };

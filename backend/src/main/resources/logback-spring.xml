@@ -1,0 +1,35 @@
+<configuration>
+    <!-- Берём дефолтную настройку Spring Boot -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- Консольный аппендер от Spring Boot -->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan([%X{requestId}]) %yellow(%logger{36}) - %msg%n %red(%ex)
+            </pattern>
+        </encoder>
+    </appender>
+
+    <appender name="File" class="ch.qos.logback.core.FileAppender">
+        <file>app.log</file>
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) %cyan([%X{requestId}]) %yellow(%logger{36}) - %msg%n %red(%ex)
+            </pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="com.zaxxer.hikari" level="INFO"/>
+    <logger name="org.hibernate" level="INFO"/>
+    <logger name="com.educode.educodeApi" level="DEBUG"/>
+
+    <!-- Устанавливаем уровень логирования по умолчанию -->
+    <root level="INFO">
+        <appender-ref ref="Console"/>
+<!--        <appender-ref ref="File"/>-->
+    </root>
+</configuration>

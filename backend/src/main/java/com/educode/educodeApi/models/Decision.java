@@ -42,6 +42,10 @@ public class Decision {
     // Прапорці стану рішення
     private boolean isFinished, isCorrect;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "homework_id")
+    private Homework homework;
+
     /**
      * Метод, що автоматично встановлює час створення рішення перед збереженням у базу даних.
      */
@@ -150,5 +154,27 @@ public class Decision {
 
     public void setCorrect(boolean correct) {
         isCorrect = correct;
+    }
+
+    public Homework getHomework() {
+        return homework;
+    }
+
+    public void setHomework(Homework homework) {
+        this.homework = homework;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        Decision that = (Decision) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -1,32 +1,23 @@
 package com.educode.educodeApi.exceptions;
 
+import java.util.Map;
+
 /**
  * Клас винятків для обробки помилок виконання контейнера
  */
-public class ContainerExecutionException extends Exception {
-    // Код помилки виконання контейнера
-    private int code;
-
-    /**
-     * Створює новий виняток з повідомленням та кодом помилки
-     * @param message повідомлення про помилку
-     * @param code код помилки
-     */
-    public ContainerExecutionException(String message, int code) {
-        super(message);
-        this.code = code;
+public class ContainerExecutionException extends ContainerException {
+    public ContainerExecutionException(String output, int exitCode) {
+        super("EXECUTION_ERROR",
+                "Execution failed, exitCode=" + exitCode,
+                "Execution failed: exitCode={}", new Object[]{exitCode},
+                Map.of("exitCode", exitCode, "output", output));
     }
 
-    /**
-     * Створює новий виняток з повідомленням та причиною
-     * @param message повідомлення про помилку
-     * @param cause причина виникнення помилки
-     */
-    public ContainerExecutionException(String message, Throwable cause) {
-        super(message, cause);
+    public Integer getCode() {
+        return (Integer) getDetails().getOrDefault("exitCode", null);
     }
 
-    public int getCode() {
-        return code;
+    public String getOutput() {
+        return (String) getDetails().getOrDefault("output", "");
     }
 }

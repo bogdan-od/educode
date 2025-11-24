@@ -1,9 +1,6 @@
 package com.educode.educodeApi.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Size;
 
 /**
  * Клас, що представляє дані для тестування задачі.
@@ -23,16 +20,12 @@ public class PuzzleData {
     private Puzzle puzzle;
 
     // Вхідні дані для тестування
-    @Size(max = 200, message = "Вхідні дані повинні містити максимум 200 символів")
     private String input;
 
     // Очікувані вихідні дані для перевірки правильності рішення
-    @Size(max = 200, message = "Вихідні дані повинні містити максимум 200 символів")
     private String output;
 
     // Кількість балів за правильне рішення тесту
-    @DecimalMin(value = "0.1", inclusive = true, message = "Кількість балів повинна бути принаймні 0.1 бал")
-    @DecimalMax(value = "10", inclusive = true, message = "Кількість балів повинна бути максимум 10 балів")
     private Float score;
 
     /**
@@ -95,5 +88,19 @@ public class PuzzleData {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        PuzzleData that = (PuzzleData) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -1,32 +1,26 @@
 package com.educode.educodeApi.exceptions;
 
+import java.util.Map;
+
 /**
  * Клас винятків, що виникають під час побудови контейнера
  */
-public class ContainerBuildingException extends Exception {
-    // Код помилки
-    private int code;
-
+public class ContainerBuildingException extends ContainerException {
     /**
      * Створює новий виняток з повідомленням та кодом помилки
-     * @param message повідомлення про помилку
-     * @param code код помилки
      */
-    public ContainerBuildingException(String message, int code) {
-        super(message);
-        this.code = code;
+    public ContainerBuildingException(String output, int exitCode) {
+        super("COMPILE_ERROR",
+                "Compilation failed",
+                "Compilation failed, exitCode={}", new Object[]{exitCode},
+                Map.of("output", output, "exitCode", exitCode));
     }
 
-    /**
-     * Створює новий виняток з повідомленням та причиною
-     * @param message повідомлення про помилку
-     * @param cause причина виникнення помилки
-     */
-    public ContainerBuildingException(String message, Throwable cause) {
-        super(message, cause);
+    public Integer getCode() {
+        return (Integer) getDetails().getOrDefault("exitCode", null);
     }
 
-    public int getCode() {
-        return code;
+    public String getOutput() {
+        return (String) getDetails().getOrDefault("output", "");
     }
 }

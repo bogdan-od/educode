@@ -1,0 +1,68 @@
+[
+  {
+    "id": "assembler",
+    "server_id": "assembler:latest",
+    "name": "Assembler Compiler",
+    "version": "latest"
+  },
+  {
+    "id": "cpp-with-gmp",
+    "server_id": "cpp-with-gmp:14.2",
+    "name": "C++ with GMP",
+    "version": "14.2"
+  },
+  {
+    "id": "rust",
+    "server_id": "rust:1.82.0",
+    "name": "Rust",
+    "version": "1.82.0"
+  },
+  {
+    "id": "c",
+    "server_id": "c:10.2",
+    "name": "C",
+    "version": "10.2"
+  },
+  {
+    "id": "go",
+    "server_id": "go:1.20",
+    "name": "Go",
+    "version": "1.20"
+  },
+  {
+    "id": "python",
+    "server_id": "python:3.11",
+    "name": "Python",
+    "version": "3.11"
+  },
+  {
+    "id": "cpp",
+    "server_id": "cpp:14.2",
+    "name": "C++",
+    "version": "14.2"
+  },
+  {
+    "id": "d-gdc",
+    "server_id": "d-gdc:14.2",
+    "name": "D (GDC)",
+    "version": "14.2"
+  },
+  {
+    "id": "haskell",
+    "server_id": "haskell:8.8",
+    "name": "Haskell",
+    "version": "8.8"
+  },
+  {
+    "id": "lua",
+    "server_id": "lua:latest",
+    "name": "Lua",
+    "version": "latest"
+  },
+  {
+    "id": "pascal",
+    "server_id": "pascal:latest",
+    "name": "Pascal",
+    "version": "latest"
+  }
+]

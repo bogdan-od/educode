@@ -1,2 +1,5 @@
 target/
 .idea/
+src/main/java/com/educode/educodeApi/services/**
+src/main/java/com/educode/educodeApi/utils/**
+src/main/java/com/educode/educodeApi/repositories/PuzzleRepository.java

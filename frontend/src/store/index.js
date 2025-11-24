@@ -9,6 +9,8 @@ export default new Vuex.Store({
     refreshToken: localStorage.getItem('refresh_token') || '',
     messages: [],
     theme: localStorage.getItem('theme') || 'light',
+    staticResources: {},
+    modals: []
   },
   // Мутації для зміни стану
   mutations: {
@@ -69,6 +71,15 @@ export default new Vuex.Store({
     clearTheme(state) {
       state.theme = null;
       localStorage.removeItem('theme');
+    },
+    setStaticResource(state, { key, value }) {
+      state.staticResources = {...state.staticResources, [key]: value};
+    },
+    addModal(state, modalInfo) {
+      state.modals.push(modalInfo);
+    },
+    removeModal(state, id) {
+      state.modals = state.modals.filter(modal => modal.id != id);
     }
   },
   // Дії для виклику мутацій
@@ -125,6 +136,70 @@ export default new Vuex.Store({
     // Очищення токену оновлення
     clearRefreshToken({ commit }) {
       commit('clearRefreshToken');
+    },
+    
+    showInfoModal({ commit }, { title, message, confirm = () => {}, cancel = () => {}, close = () => {} }) {
+      commit('addModal', {
+          id: Math.random().toString(36),
+          type: 'info',
+          title: title,
+          text: message,
+          showCancelButton: false,
+          confirm: confirm,
+          cancel: cancel,
+          close: close,
+      });
+    },
+    showSuccessModal({ commit }, { title, message, confirm = () => {}, cancel = () => {}, close = () => {} }) {
+      commit('addModal', {
+          id: Math.random().toString(36),
+          type: 'success',
+          title: title,
+          text: message,
+          showCancelButton: false,
+          confirm: confirm,
+          cancel: cancel,
+          close: close,
+      });
+    },
+    showErrorModal({ commit }, { title, message, confirm = () => {}, cancel = () => {}, close = () => {} }) {
+      commit('addModal', {
+          id: Math.random().toString(36),
+          type: 'error',
+          title: title,
+          text: message,
+          showCancelButton: false,
+          confirm: confirm,
+          cancel: cancel,
+          close: close,
+      });
+    },
+    showWarningModal({ commit }, { title, message, confirm = () => {}, cancel = () => {}, close = () => {} }) {
+      commit('addModal', {
+          id: Math.random().toString(36),
+          type: 'warning',
+          title: title,
+          text: message,
+          showCancelButton: false,
+          confirm: confirm,
+          cancel: cancel,
+          close: close,
+      });
+    },
+    showQuestionModal({ commit }, { title, message, confirm = () => {}, cancel = () => {}, close = () => {} }) {
+      commit('addModal', {
+          id: Math.random().toString(36),
+          type: 'question',
+          title: title,
+          text: message,
+          showCancelButton: true,
+          confirm: confirm,
+          cancel: cancel,
+          close: close,
+      });
+    },
+    removeModal({ commit }, id) {
+      commit('removeModal', id);
     }
   },
   // Геттери для отримання даних зі стану
@@ -170,15 +245,34 @@ export default new Vuex.Store({
       const claims = getters.getTokenClaims;
       return claims ? claims.username : null;
     },
+    getCurrentUserId(state, getters) {
+      const claims = getters.getTokenClaims;
+      return claims ? claims.id : null;
+    },
     // Отримання часу закінчення дії токену
     getAccessTokenExpiry(state, getters) {
       const claims = getters.getTokenClaims;
       return claims ? claims.exp * 1000 : null;
     },
     // Отримання ролей користувача
-    getUserRoles(state, getters) {
+    getUserPermissions(state, getters) {
       const claims = getters.getTokenClaims;
-      return claims ? claims.roles : [];
+      return claims ? claims.permissions : [];
+    },
+    defaultCodeExamples(state) {
+      return state.staticResources["defaultCodeExamples"];
+    },
+    programmingLanguages(state) {
+      return state.staticResources["programmingLanguages"];
+    },
+    checkerLanguages(state) {
+      return state.staticResources["checkerLanguages"];
+    },
+    getModals(state) {
+      return state.modals;
+    },
+    getCurrentModal(state) {
+      return state.modals[0];
     }
   }
 });

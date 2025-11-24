@@ -13,6 +13,10 @@ body.light {
     --strong-box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Сильна тінь */
     --weak-color: #d8d8d8; /* Слабкий колір */
     --secondary-color: #646464; /* Другорядний колір */
+    --success-color: #37bf37;
+    --info-color: #5b77e1;
+    --warn-color: #b0933d;
+    --error-color: #d26060;
 }
 
 /* Темна тема */
@@ -24,4 +28,8 @@ body.dark {
     --strong-box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.8); /* Сильна тінь */
     --weak-color: #525252; /* Слабкий колір */
     --secondary-color: #a8a8a8; /* Другорядний колір */
+    --success-color: #268a26;
+    --info-color: #7792f7;
+    --warn-color: #b0933d;
+    --error-color: #d26060;
 }

@@ -1,6 +1,6 @@
 <!-- Основний скрипт компоненту -->
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <!-- Шаблон компоненту -->
@@ -32,18 +32,29 @@ import { RouterView } from 'vue-router'
         <!-- Бокове навігаційне меню -->
         <nav :class="{'opened': navOpened}">
             <span class="nav-title">Educode</span>
-            <!-- Посилання для мобільної версії -->
-            <LinkBtn v-if="screenWidth <= 780" to="/" anim="bg-scale"><i class="fa fa-home"></i> Головна</LinkBtn>
-            <LinkBtn v-if="screenWidth <= 780" to="/about" anim="bg-scale"><i class="fa-regular fa-address-card"></i> Про нас</LinkBtn>
-            <!-- Посилання для авторизованих користувачів -->
-            <LinkBtn v-if="authorized" to="/user" anim="bg-scale"><i class="fa fa-user"></i> Особистий кабінет</LinkBtn>
-            <LinkBtn v-if="authorized && userRoles.find(el => el == 'ROLE_PUZZLE_CREATOR')" to="/add/puzzle" anim="bg-scale"><i class="fa fa-puzzle-piece"></i> Додати задачу</LinkBtn>
-            <!-- Посилання для неавторизованих користувачів -->
-            <LinkBtn v-if="!authorized" to="/login" anim="bg-scale"><i class="fa fa-sign-in"></i> Увійти</LinkBtn>
-            <LinkBtn v-if="!authorized" to="/register" anim="bg-scale"><i class="fa fa-user-plus"></i> Зареєструватися</LinkBtn>
-            <!-- Загальні посилання -->
-            <LinkBtn to="/leaderboard" anim="bg-scale"><i class="fa-solid fa-medal"></i> Таблиця лідерів</LinkBtn>
-            <LinkBtn to="/puzzles" anim="bg-scale"><i class="fa-solid fa-puzzle-piece"></i> Задачі</LinkBtn>
+            <div>
+                <!-- Посилання для мобільної версії -->
+                <LinkBtn v-if="screenWidth <= 780" to="/" anim="bg-scale"><i class="fa fa-home"></i> Головна</LinkBtn>
+                <LinkBtn v-if="screenWidth <= 780" to="/about" anim="bg-scale"><i class="fa-regular fa-address-card"></i> Про нас</LinkBtn>
+                
+                <!-- Посилання для авторизованих користувачів -->
+                <LinkBtn v-if="authorized" to="/user" anim="bg-scale"><i class="fa fa-user"></i> Особистий кабінет</LinkBtn>
+                <LinkBtn v-if="authorized" to="/notifications" anim="bg-scale"><i class="fa fa-bell"></i> Повідомлення</LinkBtn>
+                <LinkBtn v-if="authorized" to="/my-homework" anim="bg-scale"><i class="fa-solid fa-book"></i> Мої домашні завдання</LinkBtn>
+                <LinkBtn v-if="authorized" to="/my-nodes-groups" anim="bg-scale"><i class="fa-solid fa-folder-tree"></i> Мої вузли та групи</LinkBtn>
+                <LinkBtn v-if="authorized && userHasPermission('CREATE_PUZZLES')" to="/add/puzzle" anim="bg-scale"><i class="fa fa-puzzle-piece"></i> Додати задачу</LinkBtn>
+                <LinkBtn v-if="authorized && userHasPermission('CREATE_PUZZLES')" to="/create/checker" anim="bg-scale"><i class="fa-solid fa-microchip"></i> Створити checker</LinkBtn>
+                
+                <!-- Посилання для неавторизованих користувачів -->
+                <LinkBtn v-if="!authorized" to="/login" anim="bg-scale"><i class="fa fa-sign-in"></i> Увійти</LinkBtn>
+                <LinkBtn v-if="!authorized" to="/register" anim="bg-scale"><i class="fa fa-user-plus"></i> Зареєструватися</LinkBtn>
+                
+                <!-- Загальні посилання -->
+                <LinkBtn to="/leaderboard" anim="bg-scale"><i class="fa-solid fa-medal"></i> Таблиця лідерів</LinkBtn>
+                <LinkBtn to="/puzzles" anim="bg-scale"><i class="fa-solid fa-puzzle-piece"></i> Задачі</LinkBtn>
+                <LinkBtn to="/nodes" anim="bg-scale"><i class="fa-solid fa-sitemap"></i> Навігатор</LinkBtn>
+                <LinkBtn to="/join" anim="bg-scale"><i class="fa-solid fa-link"></i> Ввести код запрошення</LinkBtn>
+            </div>
         </nav>
         <!-- Кнопка перемикання теми -->
         <button class="toggle-theme" @click="toggleTheme">
@@ -53,6 +64,13 @@ import { RouterView } from 'vue-router'
                 <i class="fa-solid fa-tablet-screen-button"></i>
             </div>
         </button>
+
+        <RouterLink to="/notifications" class="notifications-link" :class="{'visible': notificationsTotal > 0, 'dark': binaryTheme == 'dark'}" :title="`Повідомлення. Інформативні: ${notifications.countInfo}, Застережливі: ${notifications.countWarn}, Критичні: ${notifications.countCritical}`">
+            <div class="content">
+                <div class="notifications-round">{{ notificationsTotal > 0 ? notificationsTotal : '' }}</div>
+                <i class="fa-solid fa-bell"></i>
+            </div>
+        </RouterLink>
     </header>
 
     <!-- Затемнення фону при відкритому меню -->
@@ -83,7 +101,7 @@ import { RouterView } from 'vue-router'
             <div class="col">
                 <h3>Контакти</h3>
                 <p>З питань дозволу додавання задач писати на:</p>
-                <Link href="mailto:bogdan040275@ukr.net" line="true"><i class="fa-regular fa-envelope"></i> bogdan040275@ukr.net</Link>
+                <Link href="mailto:bogdan040275@ukr.net" :line="true"><i class="fa-regular fa-envelope"></i> bogdan040275@ukr.net</Link>
             </div>
             <!-- Інформація про проект -->
             <div class="col">
@@ -97,9 +115,24 @@ import { RouterView } from 'vue-router'
             </div>
         </div>
         <!-- Копірайт та атрибуція -->
-        <p>© Всі права захищені 2024</p>
+        <p>© Всі права захищені 2025</p>
         <p>Part of the images and graphics on this site were created using resources from <a rel="nofollow" href="https://www.freepik.com" target="_blank">Freepik</a>.</p>
     </footer>
+
+    <Modal 
+        v-model:visible="modalInfo.visible"
+        :type="modalInfo.type" 
+        :title="modalInfo.title"
+        :text="modalInfo.text"
+        :confirm-button-text="modalInfo.confirmButtonText"
+        :cancel-button-text="modalInfo.cancelButtonText"
+        :show-cancel-button="modalInfo.showCancelButton"
+        :show-close-button="modalInfo.showCloseButton"
+        :close-on-backdrop="modalInfo.closeOnBackdrop"
+        @confirm="modalInfo.confirm"
+        @close="modalInfo.close"
+        @cancel="modalInfo.cancel"
+    />
 </template>
 
 <script>
@@ -111,6 +144,8 @@ import { RouterView } from 'vue-router'
     import apiClient from './axios';
     import store from './store';
     import Detect from 'detect.js';
+    import Modal from './components/Modal.vue';
+    import { hasGlobalPermission } from '@/services/permissionService.js';
 
     export default {
         // Реєстрація компонентів
@@ -118,6 +153,7 @@ import { RouterView } from 'vue-router'
             LinkBtn,
             Link,
             Preloader,
+            Modal,
         },
         // Локальний стан компонента
         data() {
@@ -129,11 +165,46 @@ import { RouterView } from 'vue-router'
                 authorized: false,
                 userRoles: [],
                 screenWidth: 1920,
+                notifications: {
+                    countInfo: 0,
+                    countWarn: 0,
+                    countCritical: 0
+                },
+                modalInfo: {
+                    visible: false,
+                    type: 'info',
+                    title: "",
+                    text: "",
+                    confirmButtonText: 'OK',
+                    cancelButtonText: 'Скасувати',
+                    showCancelButton: false,
+                    showCloseButton: true,
+                    closeOnBackdrop: true,
+                    confirm: () => {},
+                    close: () => {},
+                    cancel: () => {},
+                    id: null,
+                }
             };
         },
         // Обчислювані властивості з Vuex
         computed: {
-            ...mapGetters(['getAccessToken', 'getTheme', 'isAuthenticated', 'getMessages', 'getUserRoles']),
+            ...mapGetters(['getAccessToken', 'getTheme', 'isAuthenticated', 'getMessages', 'getUserPermissions', 'getModals', 'getCurrentModal']),
+            binaryTheme() {
+                var theme = 'light';
+
+                if (this.toggleThemePos == -1) {
+                    theme = 'dark';
+                } else if (this.toggleThemePos == -2 && window.matchMedia) {
+                    theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? 'dark' : 'light';
+                }
+
+                return theme;
+            },
+            notificationsTotal() {
+                const n = this.notifications;
+                return (n.countInfo || 0) + (n.countWarn || 0) + (n.countCritical || 0);
+            }
         },
         // Спостерігачі за змінами
         watch: {
@@ -148,13 +219,47 @@ import { RouterView } from 'vue-router'
                 this.navOpened = false;
             },
             // Слідкування за зміною ролей користувача
-            getUserRoles(newRoles) {
+            getUserPermissions(newRoles) {
                 this.userRoles = newRoles;
             },
+            getCurrentModal(newModal) {
+                if (newModal == null) {
+                    this.modalInfo.visible = false;
+                    return;
+                }
+
+                const deleteModal = () => {
+                    this.removeModal(newModal.id);
+                };
+
+                const oldConfirm = newModal.confirm;
+                const oldCancel = newModal.cancel;
+                const oldClose = newModal.close;
+
+                newModal.confirm = function(...args) {
+                    console.log('deleting...');
+                    deleteModal();
+                    if (typeof oldConfirm === 'function') return oldConfirm.apply(this, args);
+                };
+                newModal.cancel = function(...args) {
+                    console.log('deleting...');
+                    deleteModal();
+                    if (typeof oldCancel === 'function') return oldCancel.apply(this, args);
+                };
+                newModal.close = function(...args) {
+                    console.log('deleting...');
+                    deleteModal();
+                    if (typeof oldClose === 'function') return oldClose.apply(this, args);
+                };
+
+                this.modalInfo = { ...this.modalInfo, ...newModal };
+
+                this.modalInfo.visible = true;
+            }
         },
         methods: {
             // Імпорт методів з Vuex
-            ...mapActions(['setTheme', 'clearExpiredMessages', 'addSuccessMessage', 'addErrorMessage']),
+            ...mapActions(['setTheme', 'clearExpiredMessages', 'addSuccessMessage', 'addErrorMessage', 'removeModal']),
             
             // Оновлення статусу авторизації
             updateAuth() {
@@ -183,6 +288,9 @@ import { RouterView } from 'vue-router'
             // Перевірка наявності ролі у користувача
             userHasRole(role) {
                 return this.userRoles.find(el => el == role) != undefined;
+            },
+            userHasPermission(permission) {
+                return hasGlobalPermission(permission);
             },
             // Оновлення інформації про тему
             updateThemeInfo() {
@@ -230,6 +338,21 @@ import { RouterView } from 'vue-router'
                     });
                 }
             },
+            async pullNotifications() {
+                if (!this.authorized)
+                    return;
+                
+                const self = this;
+                await apiClient.get('/notifications/pull').then(response => {
+                    if (response.data) {
+                        self.notifications.countInfo = response.data['countInfo'];
+                        self.notifications.countWarn = response.data['countWarn'];
+                        self.notifications.countCritical = response.data['countCritical'];
+                    }
+                }).catch(err => {
+                    console.error(err);                    
+                });
+            }
         },
         // Хук створення компонента
         created() {
@@ -248,11 +371,14 @@ import { RouterView } from 'vue-router'
             });
 
             // Ініціалізація ролей користувача
-            this.userRoles = store.getters.getUserRoles;
+            this.userRoles = store.getters.getUserPermissions;
             
             // Запуск періодичного оновлення токена
             this.refreshToken();
             setInterval(this.refreshToken, 600000); // 10 хвилин
+
+            this.pullNotifications();
+            setInterval(this.pullNotifications, 30000);
 
             // Періодична очистка застарілих повідомлень
             setInterval(() => {
@@ -438,6 +564,7 @@ import { RouterView } from 'vue-router'
         nav {
             position: absolute;
             @include display-flex($flex-direction: column, $justify-content: start);
+            flex-wrap: nowrap;
             height: 100vh;
             position: fixed;
             top: 0;
@@ -449,13 +576,25 @@ import { RouterView } from 'vue-router'
             box-shadow: var(--strong-box-shadow);
             width: 300px;
             left: -100%;
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
 
-            > * {
+            &::-webkit-scrollbar {
+                width: 0;
+                height: 0;
+            }
+
+            > div {
+                @include display-flex($flex-direction: column, $justify-content: start);
+            }
+
+            > div > * {
                 width: 100%;
                 text-align: center;
             }
 
-            > *:not(:last-child) {
+            > div > *:not(:last-child) {
                 margin-bottom: 20px;
             }
 
@@ -597,6 +736,52 @@ import { RouterView } from 'vue-router'
                         }
                     }
                 }
+            }
+        }
+    }
+
+    .notifications-link {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background-color: var(--main-color);
+        border: 1.5px solid var(--secondary-color);
+        cursor: pointer;
+        border-radius: 3px;
+        display: none;
+
+        top: 130px;
+        left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+
+        &.visible {
+            display: block;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .notifications-round {
+                position: absolute;
+                width: 23px;
+                height: 23px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-family: $form-font;
+                border-radius: 50%;
+                font-weight: bold;
+                color: var(--secondary-color);
+                background-color: var(--main-color);
+                border: 1.5px solid var(--text-color);
+                top: 0;
+                right: 0;
+                transform: translate(50%, -50%);
             }
         }
     }

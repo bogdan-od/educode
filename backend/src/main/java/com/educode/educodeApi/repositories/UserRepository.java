@@ -1,10 +1,11 @@
 package com.educode.educodeApi.repositories;
 
 import com.educode.educodeApi.models.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
@@ -27,4 +28,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return Optional з знайденим користувачем або пустий Optional якщо користувач не знайдений
      */
     Optional<User> findByEmail(String email);
+
+    /**
+     * Пошук користувачів за логіном
+     */
+    @Query("SELECT u FROM User u WHERE LOWER(u.login) LIKE %:query%")
+    Page<User> searchByLogin(@Param("query") String query, Pageable pageable);
 }

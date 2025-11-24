@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Entity
 @Table(name = "access_tokens")
-public class AccessToken {
+public class AccessToken implements BeforeRealUpdate {
 
     // Унікальний ідентифікатор токену
     @Id
@@ -42,15 +42,17 @@ public class AccessToken {
      */
     @PrePersist
     public void prePersist() {
-        this.validUntil = LocalDateTime.now().plus(2, TimeUnit.HOURS.toChronoUnit());
+        if (this.validUntil == null) {
+            this.validUntil = LocalDateTime.now().plus(2, TimeUnit.HOURS.toChronoUnit());
+        }
     }
 
     /**
      * Метод, що викликається перед оновленням токену.
      * Оновлює термін дії токену на 2 години від поточного часу.
      */
-    @PreUpdate
-    public void preUpdate() {
+    @Override
+    public void preRealUpdate() {
         this.validUntil = LocalDateTime.now().plus(2, TimeUnit.HOURS.toChronoUnit());
     }
 
@@ -113,5 +115,19 @@ public class AccessToken {
 
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        AccessToken that = (AccessToken) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -67,6 +67,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityContextPersistenceFilter securityContextPersistenceFilter() {
+        // Створення фільтра для збереження контексту безпеки
         return new SecurityContextPersistenceFilter();
     }
 }

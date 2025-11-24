@@ -1,8 +1,8 @@
 package com.educode.educodeApi.models;
 
+import com.educode.educodeApi.enums.TaskType;
+import com.educode.educodeApi.enums.converters.TaskTypeConverter;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,21 +17,16 @@ public class Puzzle {
     // Унікальний ідентифікатор задачі
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     // Назва задачі
-    @Size(min = 5, message = "Назва повинна містити принаймні 5 символів")
-    @Size(max = 100, message = "Назва повинна містити максимум 100 символів")
     private String title;
 
     // Опис завдання задачі
-    @Size(min = 5, message = "Опис повинен містити принаймні 5 символів")
-    @Size(max = 300, message = "Опис повинен містити максимум 300 символів")
     private String description;
 
     // Основний контент задачі (умова)
-    @Size(min = 20, message = "Контент повинен містити принаймні 20 символів")
-    @Size(max = 7000, message = "Контент повинен містити максимум 7000 символів")
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     // Користувач, який створив задачу
@@ -40,22 +35,45 @@ public class Puzzle {
     private User user;
 
     // Часове обмеження на виконання задачі
-    @DecimalMin(value = "0.2", message = "Час повинен бути принаймні 0.2 секунд")
-    @DecimalMax(value = "10", message = "Час повинен бути максимум 10 секунд")
-    private float timeLimit;
+    private Float timeLimit;
 
     // Набір тестових даних для перевірки розв'язку
-    @Valid
     @OneToMany(mappedBy = "puzzle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PuzzleData> puzzleData = new HashSet<>();
 
     // Максимальна кількість балів за розв'язання
-    @DecimalMax(value = "200.0", inclusive = true, message = "Бали за задачу повинні бути максимум 200")
     private Float score;
 
     // Набір рішень, наданих користувачами
     @OneToMany(mappedBy = "puzzle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Decision> decisions = new HashSet<>();
+
+    // Програма, що перевіряє рішення користувача
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "checker_id")
+    private Checker checker;
+
+    // Тип задачі
+    @Convert(converter = TaskTypeConverter.class)
+    @Column(columnDefinition = "TINYINT NOT NULL DEFAULT 0", nullable = false)
+    private TaskType taskType = TaskType.NON_INTERACTIVE;
+
+    @Column(columnDefinition = "TINYINT(1) NOT NULL DEFAULT 1")
+    private Boolean enabled = true;
+
+    @Column(columnDefinition = "TINYINT(1) NOT NULL DEFAULT 1")
+    private Boolean visible = true;
+
+    @OneToMany(mappedBy = "puzzle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Homework> homeworks = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "tree_node_puzzles",
+            joinColumns = @JoinColumn(name = "puzzle_id"),
+            inverseJoinColumns = @JoinColumn(name = "tree_node_id")
+    )
+    private Set<TreeNode> treeNodes = new HashSet<>();
 
     /**
      * Конструктор за замовчуванням для створення нового екземпляру задачі
@@ -74,8 +92,10 @@ public class Puzzle {
      * @param puzzleData тестові дані
      * @param score максимальний бал
      * @param decisions рішення користувачів
+     * @param checker програма, що перевіряє
+     * @param taskType тип задачі
      */
-    public Puzzle(long id, String title, String description, String content, User user, float timeLimit, Set<PuzzleData> puzzleData, Float score, Set<Decision> decisions) {
+    public Puzzle(Long id, String title, String description, String content, User user, Float timeLimit, Set<PuzzleData> puzzleData, Float score, Set<Decision> decisions, Checker checker, TaskType taskType, Boolean enabled, Boolean visible) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -85,6 +105,10 @@ public class Puzzle {
         this.puzzleData = puzzleData;
         this.score = score;
         this.decisions = decisions;
+        this.checker = checker;
+        this.taskType = taskType;
+        this.enabled = enabled;
+        this.visible = visible;
     }
 
     public Set<Decision> getDecisions() {
@@ -95,11 +119,11 @@ public class Puzzle {
         this.decisions = decisions;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -135,11 +159,11 @@ public class Puzzle {
         this.user = user;
     }
 
-    public float getTimeLimit() {
+    public Float getTimeLimit() {
         return timeLimit;
     }
 
-    public void setTimeLimit(float timeLimit) {
+    public void setTimeLimit(Float timeLimit) {
         this.timeLimit = timeLimit;
     }
 
@@ -157,5 +181,86 @@ public class Puzzle {
 
     public void setScore(Float score) {
         this.score = score;
+    }
+
+    public Checker getChecker() {
+        return checker;
+    }
+
+    public void setChecker(Checker checker) {
+        this.checker = checker;
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(Boolean visible) {
+        this.visible = visible;
+    }
+
+    public Set<Homework> getHomeworks() {
+        return homeworks;
+    }
+
+    public void setHomeworks(Set<Homework> homeworks) {
+        this.homeworks = homeworks;
+    }
+
+    public Set<TreeNode> getTreeNodes() {
+        return treeNodes;
+    }
+
+    public void setTreeNodes(Set<TreeNode> treeNodes) {
+        this.treeNodes = treeNodes;
+    }
+
+    public void addTreeNode(TreeNode treeNode) {
+        treeNodes.add(treeNode);
+        treeNode.getPuzzles().add(this);
+    }
+    public void removeTreeNode(TreeNode treeNode) {
+        treeNodes.remove(treeNode);
+        treeNode.getPuzzles().remove(this);
+    }
+
+    public void addDecision(Decision decision) {
+        decisions.add(decision);
+        decision.setPuzzle(this);
+    }
+
+    public void removeDecision(Decision decision) {
+        decisions.remove(decision);
+        decision.setPuzzle(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        if (org.hibernate.Hibernate.getClass(this) != org.hibernate.Hibernate.getClass(o)) return false;
+        Puzzle that = (Puzzle) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

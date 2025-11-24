@@ -52,7 +52,7 @@ apiClient.interceptors.request.use((config) => {
 
 // Функція перевірки стандартної відповіді від сервера
 const checkForStandardResponse = (response) => {
-  if (!response.data) {
+  if (!response?.data) {
     return;
   }
 

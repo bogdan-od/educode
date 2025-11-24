@@ -37,15 +37,16 @@ public class JwtUtil {
      * Генерує JWT токен на основі наданих даних користувача.
      * @param username ім'я користувача
      * @param accessToken токен доступу
-     * @param roles список ролей користувача
+     * @param permissions список permissions користувача
      * @return згенерований JWT токен
      */
-    public String generateToken(String username, String accessToken, List<String> roles) {
+    public String generateToken(String username, Long id, String accessToken, List<String> permissions) {
         // Створюємо Map з даними користувача
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);
+        claims.put("id", id);
         claims.put("access_token", accessToken);
-        claims.put("roles", roles);
+        claims.put("permissions", permissions);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -70,8 +71,8 @@ public class JwtUtil {
      * @param token JWT токен
      * @return список ролей
      */
-    public List<String> extractRoles(String token) {
-        return extractClaim(token, claims -> claims.get("roles", List.class), false);
+    public List<String> extractPermissions(String token) {
+        return extractClaim(token, claims -> claims.get("permissions", List.class), false);
     }
 
     /**
