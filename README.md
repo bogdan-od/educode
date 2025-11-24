@@ -26,7 +26,7 @@
   <img src="https://img.shields.io/badge/▶_Дивитися_на_YouTube-D44E4E?style=for-the-badge&logo=youtube&logoColor=white&labelColor=282828" height="45"/>
 </a>
 
-<br>
+<br><br>
 
 <!-- Feature Pills with Icons -->
 <table>
