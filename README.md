@@ -1,14 +1,76 @@
-# Educode - Programming Learning Platform
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=12,14,18,20,24&height=200&section=header&text=Educode&fontSize=80&fontAlignY=35&animation=twinkling&fontColor=fff&desc=Programming%20Learning%20Platform&descAlignY=55&descSize=20"/>
 
-## ⚠️ Important Notice
+<div align="center">
 
-**This is a monorepo that aggregates filtered code from private repositories. The code version may lag behind the actual development in private repos.**
+<!-- Gradient Header -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=false&width=600&lines=🎬+ВІДЕОЗВІТ+ПРО+ПРОЄКТ">
+  <img alt="Typing SVG" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=false&width=600&lines=🎬+ВІДЕОЗВІТ+ПРО+ПРОЄКТ">
+</picture>
 
-**Це монорепозиторій, який агрегує відфільтрований код з приватних репозиторіїв. Версія коду може відставати від актуального коду в приватних репозиторіях.**
+<!-- Video Thumbnail with Hover Effect -->
+<a href="https://youtube.com/watch?v=hBAqlYzG_B8">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://img.youtube.com/vi/hBAqlYzG_B8/maxresdefault.jpg">
+    <img src="https://img.youtube.com/vi/hBAqlYzG_B8/maxresdefault.jpg" 
+         alt="EduCode Demo" 
+         width="700"
+         style="border-radius: 12px;"/>
+  </picture>
+</a>
 
-For access to the complete implementation, please contact: **[bogdan040275@ukr.net]**
+<br>
 
----
+<!-- Minimalist Play Button -->
+<a href="https://youtube.com/watch?v=hBAqlYzG_B8">
+  <img src="https://img.shields.io/badge/▶_Дивитися_на_YouTube-D44E4E?style=for-the-badge&logo=youtube&logoColor=white&labelColor=282828" height="45"/>
+</a>
+
+<br>
+
+<!-- Stats -->
+<p>
+  <img src="https://img.shields.io/youtube/views/hBAqlYzG_B8?style=flat-square&logo=youtube&label=переглядів&color=D44E4E"/>
+  <img src="https://img.shields.io/badge/тривалість-35_хв-6366F1?style=flat-square"/>
+  <img src="https://img.shields.io/badge/рік-2025-10B981?style=flat-square"/>
+</p>
+
+<!-- Feature Pills with Icons -->
+<table>
+<tr>
+<td align="center" width="140">
+  <img src="https://skillicons.dev/icons?i=docker" width="48"/><br>
+  <sub><b>Isolated</b></sub><br>
+  <sub>Docker Containers</sub>
+</td>
+<td align="center" width="140">
+  <img src="https://skillicons.dev/icons?i=java" width="48"/><br>
+  <sub><b>Java</b></sub><br>
+  <sub>Java Spring</sub>
+</td>
+<td align="center" width="140">
+  <img src="https://skillicons.dev/icons?i=vue" width="48"/><br>
+  <sub><b>Modern UI</b></sub><br>
+  <sub>Vue + Monaco</sub>
+</td>
+<td align="center" width="140">
+  <img src="https://skillicons.dev/icons?i=mysql" width="48"/><br>
+  <sub><b>Scalable</b></sub><br>
+  <sub>MySQL</sub>
+</td>
+<td align="center" width="140">
+  <img src="https://skillicons.dev/icons?i=linux" width="48"/><br>
+  <sub><b>Safety</b></sub><br>
+  <sub>Linux</sub>
+</td>
+</tr>
+</table>
+<br>
+<!-- Divider -->
+<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif">
+<br>
+
+</div>
 
 ## Overview
 
@@ -229,6 +291,16 @@ This code is provided as-is for reference purposes.
 This is a snapshot repository. Contributions are not accepted in this public version.
 
 For inquiries or access to complete implementation: **[bogdan040275@ukr.net]**
+
+---
+
+## ⚠️ Important Notice
+
+**This is a monorepo that aggregates filtered code from private repositories. The code version may lag behind the actual development in private repos.**
+
+**Це монорепозиторій, який агрегує відфільтрований код з приватних репозиторіїв. Версія коду може відставати від актуального коду в приватних репозиторіях.**
+
+For access to the complete implementation, please contact: **[bogdan040275@ukr.net]**
 
 ---
 
