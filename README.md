@@ -4,8 +4,8 @@
 
 <!-- Gradient Header -->
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=false&width=600&lines=🎬+ВІДЕОЗВІТ+ПРО+ПРОЄКТ">
-  <img alt="Typing SVG" src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=false&width=600&lines=🎬+ВІДЕОЗВІТ+ПРО+ПРОЄКТ">
+  <source media="(prefers-color-scheme: dark)" srcset="https://readme-typing-svg.demolab.com/?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=false&width=600&lines=%F0%9F%8E%AC+%D0%92%D0%86%D0%94%D0%95%D0%9E%D0%97%D0%92%D0%86%D0%A2+%D0%9F%D0%A0%D0%9E+%D0%9F%D0%A0%D0%9E%D0%84%D0%9A%D0%A2">
+  <img alt="Typing SVG" src="https://readme-typing-svg.demolab.com/?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=6366F1&center=true&vCenter=true&multiline=false&width=600&lines=%F0%9F%8E%AC+%D0%92%D0%86%D0%94%D0%95%D0%9E%D0%97%D0%92%D0%86%D0%A2+%D0%9F%D0%A0%D0%9E+%D0%9F%D0%A0%D0%9E%D0%84%D0%9A%D0%A2">
 </picture>
 
 <!-- Video Thumbnail with Hover Effect -->
@@ -27,13 +27,6 @@
 </a>
 
 <br>
-
-<!-- Stats -->
-<p>
-  <img src="https://img.shields.io/youtube/views/hBAqlYzG_B8?style=flat-square&logo=youtube&label=переглядів&color=D44E4E"/>
-  <img src="https://img.shields.io/badge/тривалість-35_хв-6366F1?style=flat-square"/>
-  <img src="https://img.shields.io/badge/рік-2025-10B981?style=flat-square"/>
-</p>
 
 <!-- Feature Pills with Icons -->
 <table>
